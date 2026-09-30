@@ -1,0 +1,80 @@
+{
+  "created_at_utc": "2026-09-19T14:29:24.133334+00:00",
+  "model_source_variable": "mejor_modelo",
+  "artifact": {
+    "filename": "ods_text_lsa_classifier.joblib",
+    "sha256": "162d885094fbb824b4e5c3790ea5a7557749bf2637fa490a025fab7ce21efdb0"
+  },
+  "input_format": {
+    "python_type": "sequence[str]",
+    "unit": "un texto en español sin preprocesar por elemento",
+    "example": [
+      "La educación inclusiva y de calidad amplía las oportunidades de aprendizaje para todas las personas."
+    ]
+  },
+  "processing_order": [
+    "preprocess_text: minúsculas, tokenización de palabras, eliminación de stopwords congeladas y tokens de longitud <= 2",
+    "tfidf.transform: vocabulario e IDF ajustados",
+    "dimred.transform: TruncatedSVD/LSA ajustado",
+    "model.predict: LogisticRegression ajustada"
+  ],
+  "pipeline_steps": [
+    {
+      "name": "tfidf",
+      "class": "TfidfVectorizer"
+    },
+    {
+      "name": "dimred",
+      "class": "TruncatedSVD"
+    },
+    {
+      "name": "model",
+      "class": "LogisticRegression"
+    }
+  ],
+  "labels": {
+    "original_values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "encoder": null,
+    "note": "El modelo predice directamente las etiquetas ODS originales; no se usó LabelEncoder."
+  },
+  "versions": {
+    "python": "3.9.6",
+    "joblib": "1.5.3",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.3.2",
+    "nltk": "3.9.2",
+    "scipy": "1.13.1"
+  },
+  "verification": {
+    "new_texts": [
+      "La educación inclusiva y de calidad amplía las oportunidades de aprendizaje para todas las personas.",
+      "El acceso seguro al agua potable y al saneamiento protege la salud de las comunidades.",
+      "La conservación de los bosques y la biodiversidad ayuda a restaurar los ecosistemas terrestres."
+    ],
+    "predictions": [
+      4,
+      6,
+      15
+    ],
+    "same_as_in_memory_pipeline": true,
+    "fit_called_during_verification": false
+  }
+}
